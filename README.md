@@ -1,8 +1,8 @@
 My groupmembers are:
-- XXXX
-- XXXX
-- XXXX
-- XXXX
-
+- Haley Roe
+- Zachary Bond
+- Patrick T
+- Garrett Foltyn
+- Vladimir paraschiv
 
 ------------------ Fill in some information about your project under this ------------------
