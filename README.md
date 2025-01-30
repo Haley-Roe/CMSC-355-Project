@@ -3,6 +3,6 @@ My groupmembers are:
 - Zachary Bond
 - Patrick T
 - Garrett Foltyn
-- Vladimir paraschiv
+- Vladimir Paraschiv
 
 ------------------ Fill in some information about your project under this ------------------
