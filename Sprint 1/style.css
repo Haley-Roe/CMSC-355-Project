@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
-    --accent-color: #f5b041;
+    --accent-color: #eeb6db;
     --base-color: white;
     --text-color: #181614;
-    --input-color: #e0cdaa;
+    --input-color: #f3d4e9;
 }
 *{
     margin: 0;
@@ -17,7 +17,7 @@ html{
 }
 body{
     min-height: 100vh;
-    background-image: url(background-4.jpg);
+    background-image: url(background-1.jpg);
     background-size: cover;
     background-position: right;
     overflow: hidden;
@@ -89,8 +89,13 @@ form input:focus{
 div:has(input:focus) > label{
     background-color: var(--text-color);
 }
-form input::placeholder{
-    color: var(--text-color);
+div:has(input:focus) > input{
+    outline: none;
+    background-color: var(--input-color);
+    border-color: var(--text-color);
+}
+div:has(input:focus) input::placeholder{
+    color: var(--base-color);
 }
 form button{
     margin-top: 10px;
