@@ -68,7 +68,7 @@ form label{
     font-weight: 500;
 }
 form input{
-    box-sizing: boarder-box;
+    box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;
     height: 50px;
