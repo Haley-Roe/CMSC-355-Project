@@ -80,17 +80,17 @@ form input{
     background-color: var(--input-color);
     transition: 150ms ease;
 }
-form input: hover{
+form input:hover{
     border-color: var(--accent-color);
 }
-form input: focus{
+form input:focus{
     outline: none;
     border-color: var(--text-color);
 }
-div: has(input: focus)> label{
+div:has(input:focus)> label{
     background-color: var(--text-color);
 }
-form input:: placeholder{
+form input::placeholder{
     color: var(--text-color);
 }
 form button{
@@ -106,10 +106,10 @@ form button{
     cursor: pointer;
     transition: 150ms ease;
 }
-form button: hover{
+form button:hover{
     background-color: var(--text-color);
 }
-form input: focus{
+form input:focus{
     outline: none;
     background-color: var(--text-color);
 }
@@ -118,7 +118,7 @@ a{
     color: var(--accent-color);
 
 }
-a: hover{
+a:hover{
     text-decoration: underline;
 }
 @media(max-width: 1100px){
