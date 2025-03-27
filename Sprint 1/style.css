@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Gidole&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
-    --accent-color: #f9e79f;
+    --accent-color: #f5b041;
     --base-color: white;
-    --text-color: #1c2833;
-    --input-color: #fbfcfc;
+    --text-color: #181614;
+    --input-color: #e0cdaa;
 }
 *{
     margin: 0;
     padding: 0;
 }
 html{
-    font-family: Gidole, sans-serif, Segoe UI;
+    font-family: Poppins, sans-serif, Segoe UI;
     font-size: 12pt;
     color: var(--text-color);
     text-align: center;
@@ -59,7 +59,6 @@ form label{
     width: 50px;
     background-color: var(--accent-color);
     fill: var(--base-color);
-    color: var(--base-color);
     border-radius: 10px 0 0 10px;
     display: flex;
     justify-content: center;
@@ -74,7 +73,7 @@ form input{
     height: 50px;
     padding: 1em;
     font: inherit;
-    boarder-radius: 0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
     border: 2px solid var(--input-color);
     border-left: none;
     background-color: var(--input-color);
@@ -87,7 +86,7 @@ form input:focus{
     outline: none;
     border-color: var(--text-color);
 }
-div:has(input:focus)> label{
+div:has(input:focus) > label{
     background-color: var(--text-color);
 }
 form input::placeholder{
@@ -98,7 +97,7 @@ form button{
     border: none;
     border-radius: 1000px;
     padding: 0.85em 4em;
-    background-color:var(--accent-color);
+    background-color: var(--accent-color);
     color: var(--base-color);
     font: inherit;
     font-weight: 600;
@@ -116,7 +115,6 @@ form input:focus{
 a{
     text-decoration: none;
     color: var(--accent-color);
-
 }
 a:hover{
     text-decoration: underline;
@@ -132,4 +130,7 @@ form div.incorrect label{
 }
 form div.incorrect input{
     border-color: #d35400;
+}
+#error-message{
+    color:  #d35400;
 }
