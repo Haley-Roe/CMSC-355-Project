@@ -1,10 +1,10 @@
-const fs = require('fs');
-const readline = require('readline');
+const fs = require('fs'); // Importing the file system module to read files
 
 // Class to store the types of user information
 class User {
-    constructor(username, id, password, type) {
+    constructor(username, email, id, password, type) {
         this.username = username;
+        this.email = email; // null if not required
         this.id = id; // null if not required
         this.password = password;
         this.type = type.toLowerCase();
@@ -15,14 +15,16 @@ class User {
 const users = new Map();
 
 /**
- * Method for authenticating Username, Password, and ID.
+ * Method for authenticating identifier , Password, and ID.
  * Also checks if ID is necessary using `requiresID`.
  */
-function authenticate(username, inputID, password) {
-    if (users.has(username)) {
-        const user = users.get(username);
+function authenticate(identifier, inputID, password) {
+    if (users.has(identifier)) {
+        const user = users.get(identifier);
 
+        // Check if the user type requires an ID
         if (requiresID(user.type)) {
+            // If ID is required, check if the provided ID matches
             if (user.id === null || user.id !== inputID) return false;
         }
 
@@ -44,84 +46,34 @@ function requiresID(userType) {
  */
 function loadCreds(file) {
     try {
+        // Read the file synchronously
         const data = fs.readFileSync(file, 'utf8');
         const lines = data.split('\n');
+
+        // Iterate through each line and parse the user information
         lines.forEach(line => {
             const parts = line.split(':');
             if (parts.length === 4) {
-                // Format: type:username:id:password
+                // Format: type:email:id:password
                 const type = parts[0].trim();
-                const username = parts[1].trim();
+                const email = parts[1].trim();
                 const id = parseInt(parts[2].trim(), 10);
                 const password = parts[3].trim();
-                users.set(username, new User(username, id, password, type));
+                users.set(email, new User(null, email, id, password, type));
             } else if (parts.length === 3) {
                 // Format: type:username:password
                 const type = parts[0].trim();
                 const username = parts[1].trim();
                 const password = parts[2].trim();
-                users.set(username, new User(username, null, password, type));
+                users.set(username, new User(username, null, null, password, type));
             } else {
                 console.log(`Error in Database Formatting on User: ${line}`);
             }
         });
+    // Catch any errors that occur during file reading
     } catch (error) {
         console.log(`Error Reading File: ${error.message}`);
     }
 }
-
-/**
- * Main function to handle user input and authentication.
- */
-async function main() {
-    // Load credentials from file
-    loadCreds('accounts.txt');
-
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    rl.question('Enter Username: ', username => {
-        if (!users.has(username)) {
-            console.log('Username not found.');
-            rl.close();
-            return;
-        }
-
-        const user = users.get(username);
-        let inputID = null;
-
-        const askForID = () => {
-            rl.question('Enter ID: ', id => {
-                if (!isNaN(id)) {
-                    inputID = parseInt(id, 10);
-                    askForPassword();
-                } else {
-                    console.log('Invalid ID format.');
-                    rl.close();
-                }
-            });
-        };
-
-        const askForPassword = () => {
-            rl.question('Enter Password: ', password => {
-                if (authenticate(username, inputID, password)) {
-                    console.log(`Login Successful! Welcome ${user.type} ${user.username}.`);
-                } else {
-                    console.log('Invalid credentials. Login failed.');
-                }
-                rl.close();
-            });
-        };
-
-        if (requiresID(user.type)) {
-            askForID();
-        } else {
-            askForPassword();
-        }
-    });
-}
-
-// Run the main function
-main();
+//Exporting the functions for use in server
+module.exports = { authenticate, loadCreds };
