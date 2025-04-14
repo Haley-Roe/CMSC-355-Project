@@ -39,7 +39,7 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
-    if (authenticate(username, password)) {
+    if (authenticate(username, null, password)) {
         res.status(200).send({ message: 'Login Successful!' });
     } else {
         res.status(401).send({ message: 'Invalid Username or Password.' });
