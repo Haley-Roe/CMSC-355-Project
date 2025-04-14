@@ -6,41 +6,76 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class LoginSystem {
-	//Hashmap to store credentials as Username -> Password
-	private static Map<String, String> creds = new HashMap<>();
+	//Class to store the types of user information.
+	static class User {
+		String username;
+		Integer id; //null if not required
+		String password;
+		String type;
+		
+		User(String username, Integer id, String password, String type) {
+			this.username = username;
+			this.id = id;
+			this.password = password;
+			this.type = type.toLowerCase();
+		}
+	}
+	
+	//Hashmap to store credentials as Username -> User
+	private static Map<String, User> users = new HashMap<>();
 	
 	/*
-	 * Method for authenticating Username and Password.
+	 * Method for authenticating Username and Password and ID.
+	 * Also checks if ID is necessary using requiresID.
 	 * Can be modified for better authentication later
 	 */
-	private static boolean authenticate(String username, String password) {
-		if (creds.containsKey(username)) {
-			String storedPassword = creds.get(username);
-			return storedPassword.equals(password);
+	private static boolean authenticate(String username, Integer inputID, String password) {
+		if (users.containsKey(username)) {
+			User user = users.get(username);
+			
+			if (requiresID(user.type)) {
+				if (user.id == null || !user.id.equals(inputID)) return false;
+			}
+			
+			return user.password.equals(password);
 		}
 		return false;
 	}
 	
 	/*
+	 * Method checks if ID is required.
+	*/
+	private static boolean requiresID(String userType) {
+		return userType.equals("doc") || userType.equals("patient");
+	}
+	
+	/*
 	 * Loads the credentials from a file.
-	 * This file stores the creds as: Username:Password
-	 * We should update this to possibly include line numbers for error checking (cont.)
-	 * account name, and other details when profile is added
+	 * This file stores the creds as different possibilities listed below.
 	 */
 	public static void loadCreds(String file) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] parts = line.split(":");
-				if (parts.length == 2) {
-					String user = parts[0].trim();
-					String pass = parts[1].trim();
-					creds.put(user, pass);
+				if (parts.length == 4) {
+					//Format type:username:password
+					String type = parts[0].trim();
+					String username = parts[1].trim();
+					int id = Integer.parseInt(parts[2].trim());
+					String password = parts[3].trim();
+					users.put(username, new User(username, id, password, type));
+				} else if (parts.length == 3) {
+					//Format type:username:password
+					String type = parts[0].trim();
+					String username = parts[1].trim();
+					String password = parts[2].trim();
+					users.put(username, new User(username, null, password, type));
 				} else {
 					System.out.println("Error in Database Formatting on User: " + line);
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | NumberFormatException e) {
 			System.out.println("Error Reading File: " + e.getMessage()); 
 		}
 	}
@@ -53,15 +88,36 @@ public class LoginSystem {
 		
 		System.out.println("Enter Username: ");
 		String username = scan.nextLine();
+		
+		if (!users.containsKey(username)) {
+			System.out.println("Username not found.");
+			scan.close();
+			return;
+		}
+		
+		User user = users.get(username);
+		Integer inputID = null;
+		
+		if (requiresID(user.type)) {
+			System.out.println("Enter ID: ");
+			if (scan.hasNextInt()) {
+				inputID = scan.nextInt();
+				scan.nextLine(); //Consume newline
+			} else {
+				System.out.println("Invalid ID format.");
+				scan.close();
+				return;
+			}
+		}
+		
 		System.out.println("Enter Password: ");
 		String password = scan.nextLine();
 		
 		//Validations of login
-		if (authenticate(username, password)) 
-			System.out.println("Login Succesful!");
-		//We can add more checks like for syntax here
+		if (authenticate(username, inputID, password)) 
+			System.out.println("Login Succesful! Welcome " + user.type + " " + user.username + ".");
 		else
-			System.out.println("Invalid Username or Password.");
+			System.out.println("Invalid credentials. Login failed.");
 		
 		scan.close();
 	}
