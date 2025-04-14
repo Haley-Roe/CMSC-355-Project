@@ -1,7 +1,10 @@
+// This script handles the signup form submission and validation.
+// It uses the Fetch API to send a POST request to the server with the form data.
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("form");
     const errorMessage = document.getElementById("error-message");
 
+    // Add event listener to the form submission
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -23,16 +26,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // If no errors, proceed with form submission
         try {
+            // Send the form data to the server using Fetch API
             const response = await fetch("/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                //send the data as JSON
                 body: JSON.stringify({ firstname, username, email, password }),
             });
 
             const result = await response.json();
-
+            
             if (response.ok) {
                 errorMessage.textContent = result.message; // Show success message
                 errorMessage.style.color = "green"; // Change text color to green
