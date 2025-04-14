@@ -3,6 +3,8 @@ const form = document.getElementById('form')
 const firstname_input = document.getElementById('firstname-input')
 const username_input = document.getElementById('username-input')
 const password_input = document.getElementById('password-input')
+const id_input = document.getElementById('id-input')
+const email_input = document.getElementById('email-input')
 const repeat_password_input = document.getElementById('repeat-password-input')
 const error_message = document.getElementById('error-message')
 
@@ -14,6 +16,9 @@ form.addEventListener('submit', (e) => {
     if(firstname_input){
         //if we have the firstname then that means we are in the sign-up page 
         errors = getSignupFormErrors(firstname_input.value, username_input.value, password_input.value, repeat_password_input.value)
+    }else if(id_input){
+        //we are in the Doctor login page, only have the email, id, and password
+        errors = getDoctorLoginFormErrors(email_input.value, id_input.value, password_input.value)
     }else{
         //we are in the login page, only have the username and password
         errors = getLoginFormErrors(username_input.value, password_input.value)
@@ -27,7 +32,7 @@ form.addEventListener('submit', (e) => {
 })
 
 //function to check for errors in the signup form
-function getSignupFormErrors(firstname, username, password, repeat_password){
+function getSignupFormErrors(firstname, username, email, password, repeat_password){
     let errors = []
 
     //check if the firstname, username, password and repeat password are empty
@@ -40,6 +45,11 @@ function getSignupFormErrors(firstname, username, password, repeat_password){
     if(username === '' || username === null){
         errors.push('Username is required')
         username_input.parentElement.classList.add('error')
+    }
+
+    if(email === '' || email === null){
+        errors.push('Email is required')
+        email_input.parentElement.classList.add('error')
     }
 
     if(password === '' || password === null){
@@ -78,8 +88,32 @@ function getLoginFormErrors(username, password){
     return errors
 }
 
+//function to check for errors in the Doctor login form
+function getDoctorLoginFormErrors(email, id, password){
+    let errors = []
+
+    //check if the username and password are empty
+    //if they are empty, add an error message to the errors array and add the error class to the input field
+    if(email === '' || email === null){
+        errors.push('Email is required')
+        email_input.parentElement.classList.add('error')
+    }
+
+    if(id === '' || id === null){
+        errors.push('Id is required')
+        id_input.parentElement.classList.add('error')
+    }
+
+    if(password === '' || password === null){
+        errors.push('Password is required')
+        password_input.parentElement.classList.add('error')
+    }
+
+    return errors
+}
+
 //add an event listener to the input fields to remove the error class when the user starts typing
-const allinputs = [firstname_input, username_input, password_input, repeat_password_input].filter(input => input !== null)
+const allinputs = [firstname_input, username_input, password_input, email_input, id_input, repeat_password_input].filter(input => input !== null)
 
 //loop through all the input fields and add an event listener to remove the error class when the user starts typing
 allinputs.forEach(input => {
