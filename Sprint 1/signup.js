@@ -35,14 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 //send the data as JSON
                 body: JSON.stringify({ firstname, username, email, password }),
             });
-
-            const result = await response.json();
             
             if (response.ok) {
+                const result = await response.text();
                 errorMessage.textContent = result.message; // Show success message
                 errorMessage.style.color = "green"; // Change text color to green
                 // Redirect to the next page or perform additional actions
             } else {
+                const result = await response.text();
                 errorMessage.textContent = result.message; // Show error message from server
                 errorMessage.style.color = "red";
             }
