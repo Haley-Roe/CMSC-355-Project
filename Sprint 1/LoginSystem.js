@@ -1,4 +1,4 @@
-const fs = require('fs'); // Importing the file system module to read files
+import {readFileSync} from 'fs'; // Importing the file system module to read files
 
 // Class to store the types of user information
 class User {
@@ -47,7 +47,7 @@ function requiresID(userType) {
 function loadCreds(file) {
     try {
         // Read the file synchronously
-        const data = fs.readFileSync(file, 'utf8');
+        const data = readFileSync(file, 'utf8');
         const lines = data.split('\n');
 
         // Iterate through each line and parse the user information
@@ -76,4 +76,4 @@ function loadCreds(file) {
     }
 }
 //Exporting the functions for use in server
-module.exports = { authenticate, loadCreds };
+export { authenticate, loadCreds };
