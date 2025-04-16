@@ -1,21 +1,26 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { authenticate } = require('./LoginSystem');
-const fs = require('fs');
+import express from 'express';
+import bodyParser from 'body-parser';
+import { authenticate, loadCreds } from './LoginSystem.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const PORT = 3000;
+const PORT = 5500;
 
 // Middleware to parse JSON data
 app.use(bodyParser.json());
-
-// Serve static files (e.g., login.html)
-app.use(express.static(__dirname));
+app.use(express.json());
 
 // Load credentials from file
-loadCreds('accounts.txt');
+loadCreds('users.txt');
 
 // Handle signup requests
 app.post('/signup', (req, res) => {
+    console.log('POST /signup');
     const { firstname, username, email, password } = req.body;
 
     // Perform server-side validation
@@ -34,6 +39,8 @@ app.post('/signup', (req, res) => {
         res.status(200).send({ message: 'Signup successful!' });
     });
 });
+
+app.use(express.static(path.join(__dirname)));
 
 // Handle login requests
 app.post('/login', (req, res) => {
