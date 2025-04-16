@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Adhere Medical - Your partner in health.">
+        <meta name="keywords" content="health, medical, adhere, healthcare, wellness">
+        <title>Adhere Medical</title>
+        <style>
+            img {
+                width: 100%;
+                height: auto;
+            }
+        </style>
+        <script>
+            function logout() {
+                // Clear session storage to log out the user
+                sessionStorage.clear();
+                // Redirect to the login page
+                window.location.href = "login.html";
+            }
+        </script>
+    </head>
+    <body>
+        <div class = "topBar">
+            <h1><a href="index.html">Adhere Medical</a></h1>
+            <p>Your partner in health.</p>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="Signup.html">Signup</a></li>
+            </ul>
+        </div>
+        <div class = "sidebar">
+            <ul>
+                <li><a href="medication.html">Medication</a></li>
+                <li><a href="calender.html">Calender</a></li>
+                <li><a href="services.html">Concerns</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="index.html">Homepage</a></li>
+            </ul>
+            <button type = "button" onclick = "logout()">Logout</button>
+        </div>
+        <article class = "content">
+            <figure>
+                <img src="images/background-1.jpg" alt="round white pills on pink background"/>
+            </figure>
+            <h2>Welcome to Adhere Medical</h2>
+            <p>Managing a complex medication routine can be overwhelming—especially for those living with chronic illnesses 
+                or caring for patients with intricate regimens. Our Medication Adherence System is here to simplify it all. Easily add medications, 
+                log your symptoms and concerns, and generate a personalized calendar with exact times for each dose. As we continue developing our 
+                platform, we aim to do more than remind—we’ll track adherence, flag missed doses, and generate detailed reports to keep healthcare 
+                providers informed and patients safer. Whether you're a patient, caregiver, or doctor, we’re building the support system you deserve.
+            </p>
+        </article>
+        <article class = "subcontent-1">
+            <figure>
+                <img src="images/chronically_ill.jpg" alt="woman hunched over in pain"/>
+            </figure>
+            <h3>Chronically ill</h3>
+            <p>Stay on top of every dose with a personalized medication schedule that adapts to your unique regimen. Log symptoms and side effects in 
+                real time, so nothing gets overlooked during doctor visits. Get gentle reminders, clear guidance, and peace of mind—because your health deserves consistency.
+            </p>
+        </article>
+        <article class = "subcontent-2">
+            <figure>
+                <img src="images/Complex_regimine.jpg" alt="girl taking pills with water"/>
+            </figure>
+            <h3>Those with complex regimines</h3>
+            <p>Juggling multiple medications and timing can feel like a full-time job—our platform keeps it all organized for you. Create a detailed medication calendar, 
+                set up reminders, and never miss a dose, no matter how complicated your routine. It’s all in one place, designed to reduce stress and improve your daily health routine.
+            </p>
+        </article>
+        <article class = "subcontent-3">
+            <figure>
+                <img src="images/Doctors.jpg" alt="doctors at desk"/>
+            </figure>
+            <h3>Doctors</h3>
+            <p>Gain deeper insight into your patients' medication adherence with real-time tracking and comprehensive reports. Review logged symptoms and missed doses before appointments 
+                to better inform treatment plans. Our system strengthens the doctor-patient connection by turning daily data into meaningful care.
+            </p>
+        <div class = "base">
+            <table>
+                <tr>
+                    <td><h3>About</h3></td>
+                    <td>Contact us</td>
+                    <td><a href="medication.html">Medication</a></td>
+                    <td><a href="login.html">Login</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="medication.html">Email</a></td>
+                    <td><a href="calender.html">Calender</a></td>
+                    <td><a href="Signup.html">Signup</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="services.html">Phone</a></td>
+                    <td><a href="concerns.html">Concerns</a></td>
+                    <td><button type = "button" onclick = "logout()">Logout</button></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="privacy.html">Privacy Policy</a></td>
+                    <td><a href="profile.html">Profile</a></td>
+            </table>
+        </div>
+    </body>
+</html>
