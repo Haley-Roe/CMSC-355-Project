@@ -16,12 +16,70 @@
                 // Redirect to the login page
                 window.location.href = "login.html";
             }
+            function addhere() {
+                // trigger adhernce
+                
+            }
         </script>
         <style>
             body{
                 background-color: #fdf5dd;
             }
         </style>
+        <script src="medicationCode.js"></script>
+        <script>
+            function updateMedicationButtons() {
+                const container = document.getElementById("buttonContainer");
+        
+                // Clear existing buttons
+                container.innerHTML = "";
+        
+                // Style container
+                container.style.display = "flex";
+                container.style.flexDirection = "column";
+                container.style.alignItems = "center";
+                container.style.gap = "15px";
+                container.style.marginTop = "15px";
+        
+                // Loop and recreate all buttons
+                medicationList.forEach((med, i) => {
+                    const wrapper = document.createElement("div");
+                    wrapper.style.display = "flex";
+                    wrapper.style.flexDirection = "column";
+                    wrapper.style.alignItems = "center";
+                    wrapper.style.gap = "5px";
+        
+                    const description = document.createElement("p");
+                    description.textContent = `${med.name}`;
+                    description.style.margin = "0";
+                    description.style.fontWeight = "bold";
+        
+                    const button = document.createElement("button");
+                    button.textContent = `Code: ${med.code}`;
+                    button.style.padding = "10px 20px";
+                    button.style.fontSize = "16px";
+                    button.style.backgroundColor = "#3498db";
+                    button.style.color = "white";
+                    button.style.border = "none";
+                    button.style.borderRadius = "5px";
+                    button.style.cursor = "pointer";
+        
+                    button.onclick = function () {
+                        alert(`You clicked on ${med.name} (Code: ${med.code})`);
+                    };
+        
+                    wrapper.appendChild(description);
+                    wrapper.appendChild(button);
+                    container.appendChild(wrapper);
+                });
+            }
+        
+            // Initial render on page load
+            document.addEventListener("DOMContentLoaded", updateMedicationButtons);
+        </script>
+        
+        
+        
     </head>
     <body>
         <div class = "topBar">
@@ -90,10 +148,16 @@
                 </li>
             </ul>
         </aside>
-        <div class = "medications">
+        <div  style="text-align: center; margin-top: 30px;" class="medications">
             <p>
                 medications go here
             </p>
-        </div> 
+            <div id="buttonContainer" style="text-align: center;"></div>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="addMedication('NewMed', 'NEW001')" style="padding: 10px 20px;">Add New Medication Test</button>
+        </div>
+        
+        
     </body>
 </html>
