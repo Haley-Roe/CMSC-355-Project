@@ -2,15 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Signup</title>
+    <title>Adhere Medical</title>
     <link rel = "stylesheet" href = "style.css">
-    <script type = "module" src="signup.js" defer></script>
+    <script type="text/javascript" src="backend/SignupAndLoginErrorSystem.js" defer></script>
+    <script type = "text/javascript" src="backend/signup.js" defer></script>
+    <script>
+        function MoveToHomePage() {
+            // Check if the user is logged in
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                // Redirect to the home page if logged in
+                window.location.href = "index.html";
+            } else {
+                // Otherwise, allow the form submission to proceed
+                document.getElementById("form").submit();
+        }}
+    </script>
 </head>
 <body>
     <div class = "wrapper">
         <h1>Signup</h1>
         <p id = "error-message"></pid></p>
-        <form id="form">
+        <form id="form" method="Post" action="/signup">
             <div>
                 <label for = "firstname-input">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
@@ -51,7 +64,7 @@
                 </label>
                 <input type = "password" name = "repeat-password" id = "repeat-password-input" placeholder="Repeat Password">
             </div>
-            <button type = "submit">Signup</button>
+            <button type = "button" onclick="MoveToHomePage()">Signup</button>
         </form>
         <p>Have an account already? <a href = "login.html">Login Here</a></p>
         <p>Are you a Doctor? <a href = "DoctorLogin.html">Login Here</a></p>
