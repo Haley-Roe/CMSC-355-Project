@@ -1,3 +1,4 @@
+
 // Purpose: To validate the user input in the signup and login forms
 const form = document.getElementById('form')
 const firstname_input = document.getElementById('firstname-input')
@@ -8,14 +9,35 @@ const email_input = document.getElementById('email-input')
 const repeat_password_input = document.getElementById('repeat-password-input')
 const error_message = document.getElementById('error-message')
 
-//add an event listener to the form to check for errors when the form is submitted
-form.addEventListener('submit', (e) => {
+export function clearAllErrors() {
+    const errorFields = [
+        firstname_input,
+        username_input,
+        password_input,
+        email_input,
+        repeat_password_input
+    ];
 
-    let error = []
+    errorFields.forEach(input => {
+        if (input && input.parentElement.classList.contains('error')) {
+            input.parentElement.classList.remove('error');
+        }
+    });
+
+    const errorMsg = document.getElementById('error-message');
+    if (errorMsg && errorMsg.style.color === 'red') { 
+        errorMsg.innerText = '';
+    }
+}
+
+//add an event listener to the form to check for errors when the form is submitted
+form?.addEventListener('submit', (e) => {
+
+    let errors = []
 
     if(firstname_input){
         //if we have the firstname then that means we are in the sign-up page 
-        errors = getSignupFormErrors(firstname_input.value, username_input.value, password_input.value, repeat_password_input.value)
+        errors = getSignupFormErrors(firstname_input.value, username_input.value, email_input.value, password_input.value, repeat_password_input.value)
     }else if(id_input){
         //we are in the Doctor login page, only have the email, id, and password
         errors = getDoctorLoginFormErrors(email_input.value, id_input.value, password_input.value)
@@ -27,86 +49,89 @@ form.addEventListener('submit', (e) => {
     //if there are errors, prevent the form from submitting and alert the user
     if(errors.length > 0){
         e.preventDefault()
-        error_message.innerText = errors.join(", ")
+        if (error_message) {
+            error_message.innerText = errors.join(", ");
+            error_message.style.color = 'red';
+        }
     }
-})
+});
 
 //function to check for errors in the signup form
-function getSignupFormErrors(firstname, username, email, password, repeat_password){
+export function getSignupFormErrors(firstname, username, email, password, repeat_password){
     let errors = []
 
     //check if the firstname, username, password and repeat password are empty
     //if they are empty, add an error message to the errors array and add the error class to the input field
-    if(firstname === '' || firstname === null){
+    if(!firstname){
         errors.push('First name is required')
-        firstname_input.parentElement.classList.add('error')
+        firstname_input?.parentElement?.classList.add('error')
     }
 
-    if(username === '' || username === null){
+    if(!username){
         errors.push('Username is required')
-        username_input.parentElement.classList.add('error')
+        username_input?.parentElement?.classList.add('error')
     }
 
-    if(email === '' || email === null){
+    if(!email){
         errors.push('Email is required')
-        email_input.parentElement.classList.add('error')
+        email_input?.parentElement?.classList.add('error')
     }
 
-    if(password === '' || password === null){
+    if(!password){
         errors.push('Password is required')
-        password_input.parentElement.classList.add('error')
+        password_input?.parentElement?.classList.add('error')
     }
 
     if(password.length < 8){
         errors.push('Password must be at least 8 characters long')
-        password_input.parentElement.classList.add('error')
+        password_input?.parentElement?.classList.add('error')
     }
     if(repeat_password !== password){
         errors.push('Passwords do not match')
-        password_input.parentElement.classList.add('error')
-        repeat_password_input.parentElement.classList.add('error')
+        password_input?.parentElement?.classList.add('error')
+        repeat_password_input?.parentElement?.classList.add('error')
     }
 
     return errors
 }
 //function to check for errors in the login form
-function getLoginFormErrors(username, password){
+export function getLoginFormErrors(username, password){
     let errors = []
 
     //check if the username and password are empty
     //if they are empty, add an error message to the errors array and add the error class to the input field
-    if(username === '' || username === null){
+    if(!username){
         errors.push('Username is required')
-        username_input.parentElement.classList.add('error')
+        username_input?.parentElement?.classList.add('error')
     }
 
-    if(password === '' || password === null){
+    if(!password){
         errors.push('Password is required')
-        password_input.parentElement.classList.add('error')
+        password_input?.parentElement?.classList.add('error')
     }
 
     return errors
 }
 
 //function to check for errors in the Doctor login form
-function getDoctorLoginFormErrors(email, id, password){
+export function getDoctorLoginFormErrors(email, id, password){
     let errors = []
 
     //check if the username and password are empty
     //if they are empty, add an error message to the errors array and add the error class to the input field
-    if(email === '' || email === null){
+    if(!email){
         errors.push('Email is required')
-        email_input.parentElement.classList.add('error')
+        email_input?.parentElement?.classList.add('error')
     }
 
-    if(id === '' || id === null){
+    if(!id){
         errors.push('Id is required')
-        id_input.parentElement.classList.add('error')
+        id_input?.parentElement?.classList.add('error')
     }
 
-    if(password === '' || password === null){
+    if(!password){
         errors.push('Password is required')
-        password_input.parentElement.classList.add('error')
+        password_input?.parentElement?.classList.add('error')
     }
 
     return errors

@@ -1,3 +1,5 @@
+import {clearAllErrors, getSignupFormErrors} from "./SignupAndLoginErrorSystem.js";
+
 // This script handles the signup form submission and validation.
 // It uses the Fetch API to send a POST request to the server with the form data.
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,16 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Content-Type": "application/json",
                 },
                 //send the data as JSON
-                body: JSON.stringify({ firstname, username, email, password }),
-            });
+                body: JSON.stringify({firstname, username, email, password}),
+            })
             
             if (response.ok) {
-                const result = await response.text();
+                const result = await response.json();
                 errorMessage.textContent = result.message; // Show success message
                 errorMessage.style.color = "green"; // Change text color to green
                 // Redirect to the next page or perform additional actions
+                clearAllErrors();
             } else {
-                const result = await response.text();
+                const result = await response.json();
                 errorMessage.textContent = result.message; // Show error message from server
                 errorMessage.style.color = "red";
             }

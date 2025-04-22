@@ -2,12 +2,12 @@ import {readFileSync} from 'fs'; // Importing the file system module to read fil
 
 // Class to store the types of user information
 class User {
-    constructor(username, email, id, password, type) {
+    constructor(userType, username, email, id, password, type) {
+        this.userType = userType; // null if not required
         this.username = username;
         this.email = email; // null if not required
         this.id = id; // null if not required
         this.password = password;
-        this.type = type.toLowerCase();
     }
 }
 
@@ -23,12 +23,19 @@ function authenticate(identifier, inputID, password) {
         const user = users.get(identifier);
 
         // Check if the user type requires an ID
-        if (requiresID(user.type)) {
+        if (requiresID(user.userType)) {
             // If ID is required, check if the provided ID matches
             if (user.id === null || user.id !== inputID) return false;
         }
 
-        return user.password === password;
+        if (user.password === password) {
+            // If the password matches, authentication is successful}
+            console.log('Authentication successful!');
+            return true; // Authentication successful
+        } else {
+            console.log('Authentication failed: Incorrect password.');
+            return false; // Authentication failed
+        }
     }
     return false;
 }
@@ -37,7 +44,14 @@ function authenticate(identifier, inputID, password) {
  * Method checks if ID is required.
  */
 function requiresID(userType) {
-    return userType === 'doc' || userType === 'patient';
+    if (userType === 'doc')
+        return true;
+    else if (userType === 'patient')
+        return false;
+    else {
+        console.log('Error: Invalid user type.');
+        return false;
+    }
 }
 
 /**
@@ -48,26 +62,25 @@ function loadCreds(file) {
     try {
         // Read the file synchronously
         const data = readFileSync(file, 'utf8');
-        const lines = data.split('\n');
+        const usersArray = data.trim() === '' ? [] : JSON.parse(data);
+        
+        if (!Array.isArray(usersArray)) {
+            console.log('Error: Parsed data is not an array.');
+            return;
+        }
 
         // Iterate through each line and parse the user information
-        lines.forEach(line => {
-            const parts = line.split(':');
-            if (parts.length === 4) {
-                // Format: type:email:id:password
-                const type = parts[0].trim();
-                const email = parts[1].trim();
-                const id = parseInt(parts[2].trim(), 10);
-                const password = parts[3].trim();
-                users.set(email, new User(null, email, id, password, type));
-            } else if (parts.length === 3) {
-                // Format: type:username:password
-                const type = parts[0].trim();
-                const username = parts[1].trim();
-                const password = parts[2].trim();
-                users.set(username, new User(username, null, null, password, type));
+        usersArray.forEach(user => {
+            if (user.userType === 'doc' || user.userType === 'patient') {
+                users.set(user.username, new User(
+                    user.userType,
+                    user.username,
+                    user.email,
+                    user.id || null,
+                    user.password,
+                ));
             } else {
-                console.log(`Error in Database Formatting on User: ${line}`);
+                console.log(`Unsupported user type: ${user.userType}`);
             }
         });
     // Catch any errors that occur during file reading
@@ -76,4 +89,4 @@ function loadCreds(file) {
     }
 }
 //Exporting the functions for use in server
-export { authenticate, loadCreds };
+export { authenticate, loadCreds, users };

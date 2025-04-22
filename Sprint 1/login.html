@@ -3,43 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Adhere Medical</title>
-    <link rel = "stylesheet" href = "style.css">
-    <script type="text/javascript" src="backend/LoginSystem.js" defer></script>
-    <script type="text/javascript" src="backend/SignupAndLoginErrorSystem.js" defer>
-        async function handleLogin(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username-input').value;
-            const password = document.getElementById('password-input').value;
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const result = await response.json();
-                const errorMessage = document.getElementById('error-message');
-
-                if (response.ok) {
-                    errorMessage.textContent = result.message;
-                    errorMessage.style.color = 'green';
-                } else {
-                    errorMessage.textContent = result.message;
-                    errorMessage.style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    </script>
+    <link rel = "stylesheet" href = "style.css">\
+    <script type="text/javascript" src="LoginSystem.js" defer></script>
+    <script type="text/javascript" src="SignupAndLoginErrorSystem.js" defer></script>
+    <script type="text/javascript" src="login.js" defer></script>
 </head>
 <body>
     <div class = "wrapper">
         <h1>login</h1>
-        <p id = "error-message"></pid></p>
-        <form id="form" onsubmit="handleLogin(event)">
+        <p id = "error-message"></p>
+        <form id="form">
             <div>
                 <label for = "username-input">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">

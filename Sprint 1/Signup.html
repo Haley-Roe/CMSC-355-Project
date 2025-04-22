@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Adhere Medical</title>
     <link rel = "stylesheet" href = "style.css">
-    <script type="text/javascript" src="backend/SignupAndLoginErrorSystem.js" defer></script>
-    <script type = "text/javascript" src="backend/signup.js" defer></script>
     <script>
         function MoveToHomePage(){
             // Check if the user is logged in
@@ -19,12 +17,13 @@
             }
         }
     </script>
+    <script type = "module" src="signup.js" defer></script>
 </head>
 <body>
     <div class = "wrapper">
         <h1>Signup</h1>
         <p id = "error-message"></pid></p>
-        <form id="form" method="Post" action="/signup">
+        <form id="form">
             <div>
                 <label for = "firstname-input">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">

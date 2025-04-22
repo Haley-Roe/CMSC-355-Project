@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { authenticate, loadCreds } from './LoginSystem.js';
+import { authenticate, loadCreds, users } from './LoginSystem.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -21,18 +21,30 @@ loadCreds('users.txt');
 // Handle signup requests
 app.post('/signup', (req, res) => {
     console.log('POST /signup');
-    const { firstname, username, email, password } = req.body;
+    const { userType = 'patient', firstname, username, email, password } = req.body;
 
     // Perform server-side validation
     if (!firstname || !username || !email || !password) {
         return res.status(400).send({ message: 'All fields are required.' });
     }
 
+    //Check if the username or email already exists.
+    const userExists = Array.from(users.values()).some((user) => user.username === username || user.email === email);
+    if (userExists) {
+        return res.status(400).send({ message: 'Username or email already exists.' });
+    }
+
     // Simulate saving the user to a file (replace with database logic if needed)
-    const user = { firstname, username, email, password };
-    fs.appendFile('users.txt', JSON.stringify(user) + '\n', (err) => {
-        if (err) {
-            console.error('Error saving user:', err);
+    const newUser = { userType, firstname, username, email, password };
+
+    // Store the user in the Map
+    users.set(username, newUser);
+    
+    // Save the updated users map to the file
+    const usersArray = Array.from(users.values());
+    fs.writeFile('users.txt', JSON.stringify(usersArray, null, 2), (writeErr) => {
+        if (writeErr) {
+            console.error('Error saving user:', writeErr);
             return res.status(500).send({ message: 'Failed to save user.' });
         }
 
@@ -40,6 +52,8 @@ app.post('/signup', (req, res) => {
     });
 });
 
+
+//Serve static files
 app.use(express.static(path.join(__dirname)));
 
 // Handle login requests
@@ -48,8 +62,10 @@ app.post('/login', (req, res) => {
 
     if (authenticate(username, null, password)) {
         res.status(200).send({ message: 'Login Successful!' });
+        console.log('Login Successful!');
     } else {
         res.status(401).send({ message: 'Invalid Username or Password.' });
+        console.log('Invalid Username or Password.');
     }
 });
 
