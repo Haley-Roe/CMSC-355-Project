@@ -65,7 +65,8 @@
                     button.style.cursor = "pointer";
         
                     button.onclick = function () {
-                        alert(`You clicked on ${med.name} (Code: ${med.code})`);
+                         //alert(You clicked on ${med.name} (Code: ${med.code}));
+                         openPanel(med.name, med.code);
                     };
         
                     wrapper.appendChild(description);
@@ -73,6 +74,15 @@
                     container.appendChild(wrapper);
                 });
             }
+            function openPanel(name, code) {
+        document.getElementById("panelMedName").textContent = name;
+        document.getElementById("panelMedCode").textContent = `Code: ${code}`;
+        document.getElementById("medPanel").style.display = "flex";
+    }
+
+    function closePanel() {
+        document.getElementById("medPanel").style.display = "none";
+    }
         
             // Initial render on page load
             document.addEventListener("DOMContentLoaded", updateMedicationButtons);
@@ -82,6 +92,19 @@
         
     </head>
     <body>
+        <div id="medPanel" style="display: none; position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    
+    <div style="background: white; padding: 30px; border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; min-width: 300px;">
+        
+        <h2 id="panelMedName">Medication Name</h2>
+        <p id="panelMedCode">Code: </p>
+        <button onclick="closePanel()" style="padding: 10px 20px; margin-top: 20px; border: none; background-color: #555; color: white; border-radius: 6px; cursor: pointer;">Back</button>
+    </div>
+</div>
+
         <div class = "topBar">
             <div class = "topBar-C">
                 <h1><a href="index.html">Adhere Medical</a></h1>
