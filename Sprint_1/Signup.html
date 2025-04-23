@@ -4,33 +4,9 @@
     <meta charset="UTF-8">
     <title>Adhere Medical</title>
     <link rel = "stylesheet" href = "style.css">
-    <script type="text/javascript" src="backend/SignupAndLoginErrorSystem.js" defer></script>
-    <script type = "text/javascript" src="backend/signup.js" defer></script>
-    <script>
-        document.getElementById('form').addEventListener('submit', async function(e) {
-          e.preventDefault(); // stop the normal navigation
-          const form = e.target;
-          const data = new FormData(form);
-        
-          try {
-            const res = await fetch(form.action, {
-              method: form.method,
-              body: data
-            });
-        
-            if (res.ok) {
-              // signup succeeded
-              sessionStorage.setItem('isLoggedIn', 'true');
-              window.location.href = 'index.html';
-            } else {
-              const err = await res.text();
-              document.getElementById('error-message').textContent = err;
-            }
-          } catch (err) {
-            document.getElementById('error-message').textContent = 'Network error';
-          }
-        });
-    </script>
+    <script type="module" src="./SignupAndLoginErrorSystem.js" defer></script>
+    <script type = "module" src="./signup.js" defer></script>
+    
 </head>
 <body>
     <div class = "wrapper">

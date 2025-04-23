@@ -18,8 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await response.json();
 
             if (response.ok) {
-                errorMessage.textContent = result.message;
+                const {message, user} = result;
+
+                errorMessage.textContent = message;
                 errorMessage.style.color = 'green';
+
+                //Store User
+                sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+                
+                setTimeout(() => {
+                    window.location.href = '/home/index.html';
+                }, 1000); // Optional delay for the message to be seen
             } else {
                 errorMessage.textContent = result.message;
                 errorMessage.style.color = 'red';

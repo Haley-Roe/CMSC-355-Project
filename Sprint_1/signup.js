@@ -26,6 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Prepare form for SVGAnimatedInteger.
+        const formData = {
+            firstname,
+            username,
+            email,
+            password
+        };
+
         // If no errors, proceed with form submission
         try {
             // Send the form data to the server using Fetch API
@@ -39,11 +47,19 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             
             if (response.ok) {
-                const result = await response.json();
-                errorMessage.textContent = result.message; // Show success message
+                const {message, user} = await response.json();
+
+                clearAllErrors();
+                errorMessage.textContent = message; // Show success message
                 errorMessage.style.color = "green"; // Change text color to green
                 // Redirect to the next page or perform additional actions
-                clearAllErrors();
+                
+                sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+
+                // Short delay then redirect to index.html
+                setTimeout(() => {
+                    window.location.href = "/home/index.html"; // Redirect to the main page after signup
+                }, 1000); // Optional delay for the message to be seen
             } else {
                 const result = await response.json();
                 errorMessage.textContent = result.message; // Show error message from server
