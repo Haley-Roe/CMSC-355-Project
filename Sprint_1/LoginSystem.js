@@ -2,9 +2,10 @@ import {readFileSync} from 'fs'; // Importing the file system module to read fil
 
 // Class to store the types of user information
 class User {
-    constructor(userType, username, email, id, password, type) {
-        this.userType = userType; // null if not required
-        this.username = username;
+    constructor(userType, firstname, username, email, id, password, type) {
+        this.userType = userType; 
+        this.firstname = firstname;
+        this.username = username; // null if not required
         this.email = email; // null if not required
         this.id = id; // null if not required
         this.password = password;
@@ -72,9 +73,11 @@ function loadCreds(file) {
         // Iterate through each line and parse the user information
         usersArray.forEach(user => {
             if (user.userType === 'doc' || user.userType === 'patient') {
-                users.set(user.username, new User(
+                const key = user.userType === 'doc' ? user.email : user.username;
+                users.set(key, new User(
                     user.userType,
-                    user.username,
+                    user.firstname,
+                    user.username || null,
                     user.email,
                     user.id || null,
                     user.password,

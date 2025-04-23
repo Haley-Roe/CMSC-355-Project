@@ -1,9 +1,16 @@
 [
   {
+    "userType": "doc",
+    "firstname": "Dr. Doc",
+    "email": "doc@gmail.com",
+    "id": "1234567890",
+    "password": "Password"
+  },
+  {
     "userType": "patient",
     "firstname": "Vlad",
     "username": "Vlad",
-    "email": "Vlad@gmail.com",
+    "email": "vlad@gmail.com",
     "password": "Password"
   }
 ]

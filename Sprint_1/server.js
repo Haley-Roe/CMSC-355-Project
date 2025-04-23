@@ -90,10 +90,16 @@ app.post('/login', (req, res) => {
 app.post('/doctor-login', (req, res) => {
     const { email, id, password } = req.body;
 
-    if (authenticate(email, parseInt(id, 10), password)) {
-        res.status(200).send({ message: 'Login Successful! Welcome Doctor.' });
+    if (authenticate(email, id, password)) {
+        const user = users.get(email);
+        const {userType, firstname} = user;
+
+        res.status(200).send({ message: 'Login Successful! Welcome Doctor.',
+        user: ({userType, firstname, email, id})});
+        console.log('Login Successful!');
     } else {
         res.status(401).send({ message: 'Invalid credentials. Login failed.' });
+        console.log('Invalid email, id or password.');
     }
 });
 

@@ -4,38 +4,9 @@
     <meta charset="UTF-8">
     <title>Adhere Medical</title>
     <link rel = "stylesheet" href = "style.css">
-    <script type="text/javascript" src="backend/LoginSystem.js" defer></script>
-    <script type="text/javascript" src="backend/SignupAndLoginErrorSystem.js" defer>
-        async function handleDoctorLogin(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email-input').value.trim();
-            const id = document.getElementById('id-input').value.trim;
-            const password = document.getElementById('password-input').value.trim();
-
-            try {
-                const response = await fetch('/doctor-login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, id, password })
-                });
-
-                const result = await response.json();
-                const errorMessage = document.getElementById('error-message');
-
-                if (response.ok) {
-                    errorMessage.textContent = result.message;
-                    errorMessage.style.color = 'green';
-                    // Redirect or perform additional actions on successful login
-                } else {
-                    errorMessage.textContent = result.message;
-                    errorMessage.style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    </script>
+    <script type="module" src="./LoginSystem.js" defer></script>
+    <script type="module" src="./SignupAndLoginErrorSystem.js" defer></script>
+    <script type ="module" src="./doctorLogin.js" defer></script>
 </head>
 <body>
     <div class = "wrapper">
