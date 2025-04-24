@@ -8,6 +8,7 @@
         <title>Adhere Medical</title>
         <link rel = "stylesheet" href = "styleSidebar.css">
         <link rel = "stylesheet" href = "styleTopbar.css">
+        <link rel = "stylesheet" href = "styleConcerns.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
         <script>
             function logout() {
@@ -20,6 +21,9 @@
         <style>
             body{
                 background-color: #fdf5dd;
+            }
+            .concerns{
+                margin-left: 90px;
             }
         </style>
     </head>
@@ -40,12 +44,6 @@
                 <h2>Adhere Medical</h2>
             </div>
             <ul class = "sidebar-links">
-                <li>
-                    <a href="#">
-                        <span class="material-symbols-outlined">
-                            menu
-                        </span>Dashboard</a>
-                </li>
                 <li><a href="medication.html">
                     <span class="material-symbols-outlined">
                         pill
@@ -91,9 +89,66 @@
             </ul>
         </aside>
         <div class = "concerns">
-            <p>
-                concerns go here
-            </p>
+            <h2>Your Concerns: </h2>
+            <form id="form">
+                <dl>
+                    <dt>
+                        <div class = "Concern-title">
+                            <label for = "concern-title">
+                                <span class="material-symbols-outlined">
+                                    mail
+                                </span>Concern Title:                
+                            </label>
+                            <input type = "text" name = "concern-title" id = "concern-title-input" placeholder="Concern Title">
+                        </div>
+                    </dt>
+                    <dd>
+                        <div class = "Concern-body">
+                            <label for = "Concern-body">
+                                <span class="material-symbols-outlined">
+                                    notes
+                                </span>
+                            </label>
+                            <textarea type = "text" name = "Concern-body" id = "Concern-body-input" placeholder="Enter you text here ...">  </textarea>
+                        </div>
+                    </dd>
+                </dl>
+                <button type="submit" class="Send-button">+ Send</button>
+            </form>
+            <div class="past-concerns">
+                <h3>Past Concerns:</h3>
+                <ul id="concerns-list">
+                    <!-- past concerns will be added here -->
+                </ul>
+            </div>
+            <script>
+                document.getElementById("form").addEventListener("submit", function(event) {
+                    event.preventDefault();
+            
+                    const name = document.getElementById("concern-title-input").value.trim();
+                    const body = document.getElementById("Concern-body-input").value.trim();
+            
+                    if (!name) {
+                        alert("Concern title is required.");
+                        return;
+                    }
+            
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <strong>${name}</strong>: ${body}
+                        <button class="remove-btn">Remove</button>
+                    `;
+            
+                    document.getElementById("concerns-list").appendChild(listItem);
+            
+                    // Add event listener to remove button
+                    listItem.querySelector(".remove-btn").addEventListener("click", function () {
+                        listItem.remove();
+                    });
+            
+                    document.getElementById("form").reset();
+                });
+            </script>            
         </div> 
     </body>
 </html>
