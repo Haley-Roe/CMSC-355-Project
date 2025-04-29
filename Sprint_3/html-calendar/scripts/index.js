@@ -7,6 +7,7 @@ initViewSelect();
 // ✅ Create Event Button Functionality
 document.addEventListener("DOMContentLoaded", () => {
     const createEventButton = document.querySelector('.button--primary.button--lg');
+    const logoutButton = document.getElementById('logout-button');
 
     if (createEventButton) {
         createEventButton.addEventListener('click', () => {
@@ -90,4 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault(); // stop the '#' from jumping to top
+            sessionStorage.clear();
+            window.location.href = "/login.html";
+        });
+    }
 });
+
