@@ -6,6 +6,14 @@ export function initCalendar() {
   const dayCalendarElement = document.querySelector("[data-day-calendar]");
   const dayList = monthCalendarElement.querySelector(".month-calendar__day-list");
 
+  const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+  if (user && user.userType === 'doc') {
+    createPatientDropdown();  // Add dropdown for doctor
+  } else if (user) {
+    // For patients, auto-load their own calendar
+    loadPatientCalendar(user.username);
+  }
+
   let now= new Date();
   let currentYear = now.getFullYear();
   let currentMonth = now.getMonth();
@@ -288,6 +296,55 @@ export function initCalendar() {
   }
 }
 
+async function createPatientDropdown() {
+  const container = document.createElement('div');
+  container.innerHTML = `
+      <label for="patient-select">Select a Patient: </label>
+      <select id="patient-select">
+          <option value="">-- Select a Patient --</option>
+      </select>
+  `;
+  // Insert at the top of the nav bar (adjust selector if needed)
+  document.querySelector('.nav').prepend(container);  // ✅ Marked insertion point
+
+  try {
+      const res = await fetch('/api/patients');
+      const patients = await res.json();
+      const select = document.getElementById('patient-select');
+
+      patients.forEach(p => {
+          const option = document.createElement('option');
+          option.value = p.username;
+          option.textContent = `${p.firstname} (${p.username})`;
+          select.appendChild(option);
+      });
+
+      // Listen for selection change to load patient calendar
+      select.addEventListener('change', async (e) => {
+          const username = e.target.value;
+          if (username) {
+              await loadPatientCalendar(username);
+          }
+      });
+  } catch (err) {
+      console.error('Error loading patient list:', err);
+  }
+}
+
+async function loadPatientCalendar(username) {
+  try {
+      const res = await fetch(`/api/calendar/${username}`);
+      const calendarData = await res.json();
+      console.log(`Loaded calendar for ${username}:`, calendarData);
+
+      events.length = 0; // Clear existing events
+      events.push(...calendarData); // Load new events
+      renderCalendar();
+  } catch (err) {
+      console.error('Error loading calendar:', err);
+  }
+}
+
   if (prevButton){
     prevButton.addEventListener("click", () => {
       currentMonth--;
@@ -335,6 +392,33 @@ export function initCalendar() {
     const repeat = document.getElementById("event-repeat").value;
 
     events.push({ title, time, day, month, year, repeat, completed: false });
+
+    (async () => {
+      const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+      let ownerUsername = user.username;
+
+      const select = document.getElementById('patient-select');
+      if (user.userType === 'doc') {
+        if (select && select.value) {
+            ownerUsername = select.value;
+        } else {
+            alert('Please select a patient before adding an event.');
+            return;  // ⛔ Stop submission if no patient is picked
+        }
+      }
+
+      try {
+          await fetch(`/api/calendar/${ownerUsername}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(events),
+          });
+          console.log('Calendar saved successfully.');
+      } catch (err) {
+          console.error('Failed to save calendar:', err);
+      }
+    })();
+
     eventModal.style.display = "none";  
     renderCalendar();
   });
